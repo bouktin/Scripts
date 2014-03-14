@@ -1,12 +1,12 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 ##########################################################
 ## dhcpd-duplicate-check.pl
 ## 	checks the presence of duplicate files
 ##
-## author: Thomas Blanchard - bouktin@gmail.com
-## version: 1.01
-## last revision: 2011-10-07
+## author: Thomas Blanchard - thomasfp.blanchard@gmail.com
+## version: 1.02
+## last revision: 2014-03-14
 ##########################################################
 
 use local::lib;
@@ -16,7 +16,7 @@ use Net::MAC;
 use Data::Dumper;
 use Getopt::Long qw(:config no_ignore_case);
 
-my $dhcpfile="/config/dhcp/dhcpd.conf";
+my $dhcpfile="/etc/dhcp/dhcpd.conf";
 #my @VERBOSITY= qw/ 1 2 3 4 5/;
 my $verbose = 1;	# 0 = quiet, exit state only, 1: summary state, 2:detail of problem, 3: small debug , 4: verbose debug
 my ($group , $host, $mac) = qw(dummy dummy 0);
@@ -84,7 +84,7 @@ while (<DHCPDCONF>) {
 	}
 	
 	## read line extract mac /hardware ethernet 00:30:d3:06:28:38;/
-	## read line extract fixed-address /fixed-address console.test1950.wl.valueclick.com;/
+	## read line extract fixed-address /fixed-address console.server.example.com;/
 	
 	## if matches: /}/
 	## close HOSTNAME
