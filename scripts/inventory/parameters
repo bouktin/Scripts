@@ -1,0 +1,79 @@
+
+# author: Thomas Blanchard - thomasfp.blanchard@gmail.com
+# version: 0.2
+# date: 2014-04-09
+
+SCRIPTS_DIR=${PWD}
+EXPECT=${SCRIPTS_DIR}/perl-ssh.pl
+EXPECT_OPT="-u root -p calvin"
+CMDWARR=${SCRIPTS_DIR}/dell-warranty-api.pl
+
+## to be sure that the configuration is set-up properly and to avoid overwriting good data:
+## DATA_DIR=$HOME/inventory/output/dc1/chassis-config
+DATA_DIR=/dev/null
+
+## Function wrap_expect
+# usage: wrap_expect "chassis" "command"
+echo -e "loading function wrap_expect, usage: wrap_expect \"chassis\" \"command\""
+function wrap_expect() {
+# $EXPECT $EXPECT_OPT $chassis setslotname -i $slot $name15
+	chassis=$1
+	command="$2"
+	OPT=${3-"$EXPECT_OPT"}
+	$EXPECT $OPT -H $chassis -c "$command"
+}
+
+## Function wrap_expect_log_pwd : set the login and password to use at the same time
+# usage: wrap_expect_log_pwd "chassis" "login" "password" "command"
+echo -e 'loading function wrap_expect_log_pwd, usage: wrap_expect_log_pwd "chassis" "login" "password" "command"'
+function wrap_expect_log_pwd() {
+	chassis=$1
+	login=$2
+	password="$3"
+	command="$4"
+	EXPECT_OPT="-u $login -u $password"
+	$EXPECT $EXPECT_OPT -H $chassis -c "$command"
+}
+
+echo -e 'loading function get_dell_warranty, usage: get_dell_warranty "SERVICE_TAG"'
+function get_dell_warranty() {
+	st=$1
+	$CMDWARR -st $st
+}
+
+echo -e 'loading function validate_dns_host, usage: validate_dns_host "host_name"'
+function validate_dns_host () {
+	# check the DNS, DHCP
+	name=$1
+	valid=0
+	name=$(echo "$name" | sed -E -e "s/(^.*?[^.])$/\1./")	# rewrite it absolute fqdn (with a . at the end to avoid probemas with resolv.conf)
+	ip=$(host $name | awk '{print $4}')
+	rev_ip=$(host $ip | awk '{print $5}')
+	if [ "X$name" != "X$rev_ip"  ]; then
+		echo "NOT VALID - DNS NOT setup properly, $name -> $ip -> $rev_ip";
+		valid=0
+	else
+		echo "DNS VALID: $name -> $ip -> $rev_ip"
+		valid=1
+	fi
+	return $valid
+}
+
+echo -e 'loading function validate_server_chassis, usage: validate_dns_host "host_name" "chassis" "module" ; returns 1 if valid, 0 if not. "module" format is "server-N" where N ~ {1..16}'
+function validate_server_chassis () {
+	# check the DNS, DHCP
+	name=$1
+	chassis=$2
+	module=$3
+	valid=0
+	console=$(echo "console.${module}.${chassis}." | tr "[A-Z]" "[a-z]")
+	dns=$(dig +noall +answer "console.$name" CNAME | awk '{print tolower($5)}')
+	if [ "X$console" != "X$dns"  ]; then
+		echo "CONSOLE DNS NOT VALID, dns is \"$dns\" and doesn't match \"$console\"";
+		valid=0
+	else
+		echo "CONSOLE DNS VALID: $dns"
+		valid=1
+	fi
+	return $valid
+}
