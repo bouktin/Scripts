@@ -1,0 +1,14 @@
+
+## set configuration for a specific project and overwrite the parameters if needed 
+## e.g. overwrite the login/pwd of the chassis connection
+
+TEST=0
+DATA_DIR=$HOME/inventory/2014-02_test/
+SWITCH_CONF_BASE=${DATA_DIR}/intf_
+DESC=''
+
+# once the project is done, set the values to /dev/null and TEST to 1 so that nothing is done
+#TEST=1
+#DATA_DIR=/dev/null
+#SWITCH_CONF_BASE=/dev/null
+
