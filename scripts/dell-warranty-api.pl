@@ -164,16 +164,16 @@ dell-warranty-api.pl -st 123ABCD [-debug] [-help] [[-]-warranty-only|-waronly|-q
 
  ### quick batch usage:
  # copy and paste from excel into a variable:
- [tblanchard@fs1.vclk.net inventory]$ LST="7VD1W1J 
- > 6CCNH1J
- > 4Z75V1J
- > G1R3J71"
+ [user@server inventory]$ LST="ABC1234 
+ > BCD2345
+ > CDE4567
+ > DEF5678"
  # and then run:
- [tblanchard@fs1.vclk.net inventory]$ for st in $LST; do ./check-dell-warranty.pl -st $st; done
- 7VD1W1J;Next Business Day;DELL;09/10/2005;09/10/2008
- 6CCNH1J;Next Business Day;DELL;12/02/2005;12/02/2008
- 4Z75V1J;Next Business Day;DELL;22/09/2005;22/09/2008
- G1R3J71;4 Hour On-Site Service;PE1850 3.2GHz/1MB XNN,800 FSB;2005-05-12;2008-05-12
+ [user@server inventory]$ for st in $LST; do ./check-dell-warranty.pl -st $st; done
+ ABC1234;Next Business Day;DELL;09/10/2005;09/10/2008
+ BCD2345;Next Business Day;DELL;12/02/2005;12/02/2008
+ CDE4567;Next Business Day;DELL;22/09/2005;22/09/2008
+ DEF5678;4 Hour On-Site Service;PE1850 3.2GHz/1MB XNN,800 FSB;2005-05-12;2008-05-12
  
  ### batch usage from file
  LST=`awk -F";" '{print \$2}' file`;
