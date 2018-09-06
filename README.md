@@ -2,6 +2,7 @@ Scripts
 =======
 
 Some useful and less useful scripts in Perl, Bash, Python or other scripted language.
+See scripts/README.md for tools list and usage.
 
 Licence
 =======
