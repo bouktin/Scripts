@@ -1,9 +1,10 @@
 Scripts
 =======
 
-Some useful and less useful scripts in Perl, Bash, Python or other scripted language
-See Scripts/README.md
+Some useful and less useful scripts in Perl, Bash, Python or other scripted language.
 
+Licence
+=======
 Unless otherwise noted, these scripts are available under the BSD-3 licence :
 
 Copyright (c) 2014, Thomas Blanchard
